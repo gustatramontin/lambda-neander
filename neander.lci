@@ -1,0 +1,6 @@
+
+V = \a.\b.\f.f a b;
+Byte = \a.\b.\c.\d.\e.\f.\g.\h.V a (V b (V c (V d (V e (V f (V g (V h Nil)))))));
+
+
+

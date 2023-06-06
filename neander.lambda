@@ -1,0 +1,111 @@
+T = \a b.a
+F = \a b.b
+NIL = \x.T
+
+isnil = \p.p (\xy.F)
+\a b.a T
+\a b.b T
+\b.b 
+
+NOT = \b.bFT
+AND = \a b.abF
+OR = \a b.aTb
+XOR = \a b.(AND (OR a b) (NOT (AND a b)))
+
+IF = \b a c.bac
+
+V = \a b f.f a b
+
+BYTE = \a b c d e f g h.V a (V b (V c (V d (V e (V f (V g (V h nil)))))))
+
+BYTE = \a.\b.\c.\d.\e.\f.\g.\h.V a (V b (V c (V d (V e (V f (V g (V h nil)))))))
+
+
+first = \b.b t
+rest = \b.b f
+
+Y = \f.(\x.f(x x))(\x.f(x x))
+
+partialadd = \abc.(XOR (XOR a b) c)
+carry = \abc.(OR (AND (XOR a b) c) (AND a b))
+add = Y \f.\abc. (isnil a) NIL v (partialadd (first a) (first b) c) (f (rest a) (rest b) (carry (first a) (first b) c)))
+
+ISZERO = \b.AND NOT N1 b AND NOT N2 AND NOT N3 AND NOT N4 AND NOT N5 AND NOT N6 AND NOT N7 AND NOT N7
+
+
+dec = \b ADD BYTE f t t t t t t 
+
+    
+00000001
+00000010
+00000011
+00000100
+00000101
+
+
+10000000
+01000000
+11000000
+00100000
+10100000
+
+mem = v BYTE (v BYTE v ...254 BYTE)
+
+
+N1 = \b.b first
+N2 = \b.b rest first
+N3 = \b.b rest rest first
+N4 = \b.b rest rest rest first
+N5 = \b.b rest rest rest rest first
+N6 = \b.b rest rest rest rest rest first
+N7 = \b.b rest rest rest rest rest rest first
+N8 = \b.b rest rest rest rest rest rest rest first
+
+NOTb = \b. BYTE NOT N1 b NOT N2 b NOT N3 b NOT N4 b NOT N5 b NOT N6 b NOT N7 b NOT N8 b
+ANDb = \ab. BYTE AND N1 a N1 b AND N2 a N2 b AND N3 a N3 b AND N4 a N4 b AND N5 a N6 b AND N7 a N7 b AND N8 a N8 b
+ORb = \ab. BYTE OR N1 a N1 b OR N2 a N2 b OR N3 a N3 b OR N4 a N4 b OR N5 a N6 b OR N7 a N7 b OR N8 a N8 b
+
+XORb = \ab. BYTE XOR N1 a N1 b XOR N2 a N2 b XOR N3 a N3 b XOR N4 a N4 b XOR N5 a N6 b XOR N7 a N7 b XOR N8 a N8 b
+
+Inst = \f.\m.\a.\c.\i.
+
+sta = Y \f.\mnas.(if iszero s) m (v ((if iszero n) a (first m)) f(rest m (dec n) a (dec s)))
+lda = \mn.nth m n
+
+ADDi = \mna.ADD a (nth m n)
+ANDi = \mna.ANDb a (nth m n)
+ORi = \mna.ANDb a (nth m n)
+NOTi = \a.NOTb a
+
+Jmpi = \f.\m.\a.\c.\i.f m a i Z
+Jni = \f.\m.\a.\c.\i.f
+Jzi = \f.\m.\a.\c.\i.f
+
+Hlt
+
+instructios_path = v ( v hlt (v jz (v jn jmp))) (v (v NOT (v AND OR)) (v (v ADD lda) sta)) 
+run  = Y \f.\maci.(if c==2⁸) m (if iszero i) 
+  (f m a (inc c) (Nth m c)) 
+  ((N8 i) 
+    ((N7 i) 
+      hlt 
+      ((N6 i) 
+        jz 
+        ((N5 i) 
+          jn 
+          jmp))) 
+    ((N7 i) 
+      ((N6 i) 
+        NOT 
+        ((N5 i) 
+        AND 
+        OR)) 
+      ((N6 i) 
+        ((N5 i) 
+          ADD 
+          lda) 
+        sta))) ) 
+
+
+
+
