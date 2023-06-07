@@ -43,18 +43,15 @@ Carry = \a.\b.\c.(Or (And (Xor a b) c) (And a b));
 Add = Y \f.\a.\b.\c. (Isnil a) Nil (V (Partialadd (Fst a) (Fst b) c) (f (Rst a) (Rst b) (Carry (Fst a) (Fst b) c)));
 
 Dec = \b.Add b (Byte T T T T T T T T) F;
-OldInc = \b.Add b (Byte T F F F F F F F) F;
 Inc = Y \f.\b. (Isnil b) Nil ((Xor (Fst b) T) (V T (Rst b)) (V F (f (Rst b))));
 Z = Byte F F F F F F F F;
 
 Mem = V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z Nil)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
-
 Mem10 = V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z Nil)))))))));
 
-#Numv = \n. (Y \f.\b. (Iszero b) Nil (V T (f (Inc b)))) (Inc (Notb n));
-
 Succ = \n.\f.\a.f( n f a);
-
+Pred = \n.\f.\x. n(\g.\h.h(g f)) (\u.x) (\u.u) ;
+Iszeron = \n.n (\x.F) T;
 Double = \n.\f.2 (n f);
 
 Numb = \bi. (Y \f.\b.\v.\a. (Isnil b) v (
@@ -62,30 +59,38 @@ Numb = \bi. (Y \f.\b.\v.\a. (Isnil b) v (
     (f (Rst b) ((a Succ) v) (Double a))
     (f (Rst b) v (Double a)))) bi 0 1; # v = \f.\a.f(a)
 
-Nth = Y \f.\p.\n. (Isnil p) Nil (( Iszero n) (Fst p) (f (Rst p) (Dec n)));
+Nth = Y \f.\p.\n. (Isnil p) Nil (( Iszeron n) (Fst p) (f (Rst p) (Pred n)));
 
-StaSub = Y \f.\m.\n.\a. (Isnil m) Nil ((Isnil n) (V a (Rst m)) (V (Fst m) (f (Rst m) (Rst n) a)));
+Nthb = \p.\n. Nth p (Numb n);
 
-Sta = \m.\n.\a. StaSub m (Numv n) a;
+Sta = Y \f.\m.\n.\a. (Isnil m) Nil ((Iszeron n) (V a (Rst m)) (V (Fst m) (f (Rst m) (Pred n) a)));
 
-Run = Y \f.\m.\a.\c.\i.(Isnil (Nth m c)) m ((Iszero i)
-	(f m a (Inc c) (Nth m c))
+
+#Program = Sta (Sta (Sta (Sta (Sta (Sta Mem 0 (Byte F F F F F T F F)) 1 (Byte F F F F F F F T)) 128 (Byte T T T T T T T T)) 2 (Byte F F F F T F F F)) 3 Z) 4 (Byte F F F F T T T T);
+Program = V (Byte F F F F F T F F) ( V (Byte F F F F F F F T) ( V (Byte F F F F T F F F) ( V (Byte F F F F T T T T) ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z ( V Z Nil)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
+
+Hltprogram = Sta Mem 0 (Byte F F F F T T T T);
+
+Run = Y \f.\m.\a.\c.\i.(Isnil (Nthb m c)) m ((Iszero i)
+	(f m a (Inc c) (Nthb m (Inc c)))
 	((N8 i) 
 		((N7 i) 
 			m #HLT 
 			((N6 i) 
-				((Iszero a) (f m a (Nth m c) Z) (f m a (Inc c) Z)) #JZ 
+				((Iszero a) (f m a (Nthb m c) (Nthb m (Inc c))) (f m a (Inc c) (Nthb m (Inc c)))) #JZ 
 				((N5 i) 
-					((N8 a) (f m a (Nth m c) Z) (f m a (Inc c) Z)) #JN
-					(f m a (Nth m c) Z)))) #JMP 
+					((N8 a) (f m a (Nthb m c) (Nthb m (Inc c))) (f m a (Inc c) (Nthb m (Inc c)))) #JN
+					(f m a (Nthb m c) (Nthb m (Inc c)))))) #JMP 
 		((N7 i) 
 			((N6 i) 
-				(f m (Notb a) (Inc c) Z) #NOT
+				(f m (Notb a) (Inc c) (Nthb m (Inc c))) #NOT
 				((N5 i) 
-				(f m (Andb a (Nth m c)) (Inc c) Z) # AND
-				(f m (Orb a (Nth m c)) (Inc c) Z))) #OR
+				(f m (Andb a (Nthb m c)) (Inc c) (Nthb m (Inc c))) # AND
+				(f m (Orb a (Nthb m c)) (Inc c) (Nthb m (Inc c))))) #OR
 			((N6 i) 
 				((N5 i) 
-					(f m (Add a (Nth m c) F) (Inc c) Z) #ADD
-					(f m (Nth m c) (Inc c) (Z))) #LDA
-				(f (Sta m (Nth m c) a) (Inc c) Z)))) ); #STA
+					(f m (Add a (Nthb m c) F) (Inc c) (Nthb m (Inc c))) #ADD
+					(f m (Nthb m c) (Inc c) ((Nthb m (Inc c))))) #LDA
+				((N5 i)
+					(f (Sta m (Numb (Nthb m c) a)) (Inc c) (Nthb m (Inc c))) #STA
+					(f m a (Inc c) (Nthb m (Inc c))))) ))); # None 
