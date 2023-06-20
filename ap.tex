@@ -1,38 +1,75 @@
-\documentclass{beamer}
+$\lambda$documentclass{beamer}
 
-\begin{document}
+$\lambda$begin{document}
 
-\title{$\lambda$-Calculus}
-\maketitle
+$\lambda$title{$$\lambda$lambda$-Calculus}
+$\lambda$maketitle
 
-\begin{frame}
-  \frametitle{O que é}
-  \framesubtitle{}
+$\lambda$begin{frame}
+	$\lambda$frametitle{O que é}
+	$\lambda$framesubtitle{}
 
-  \begin{itemize}
-    \item Modelo de Computação
-    \item Menor Linguagem de Programação
-    \item Equilante à Máquina de Turing
-    \item
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Qual A Importância}
-  \begin{itemize}
-    \item Estudar Linguagems de Programação
-    \item Base Para As Linguagens Funcionais (Haskell, Lisp,)
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Conceitos Básicos}
-\begin{tabular}{lll}
-  Variável & letra & a,b,c,x,y,z...\\
-  Função & $\lambda$<parametro>.<retorno> & $\lambda$x.x\\
-  Aplicação & <função><varável ou função> &  ($\lambda$x.x) a\\
-  \end{tabular}
+	$\lambda$begin{itemize}
+		$\lambda$item Modelo de Computação
+		$\lambda$item Criado por Alonzo Church
+		$\lambda$item Equilante à Máquina de Turing
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Qual A Importância}
+	$\lambda$begin{itemize}
+		$\lambda$item Linguagem Universal de Computação
+		$\lambda$item Sistema Mais Completa de Computação
+		$\lambda$item Church o usou para resolver o problema da decídibiliadde
+		$\lambda$item Estudo Teórico das Linguagems de Programação
+		$\lambda$item Base Para As Linguagens Funcionais (Haskell, Lisp,)
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Conceitos Básicos}
+	$\lambda$begin{tabular}{lll}
+		Variável & letra & a,b,c,x,y,z...$\lambda$$\lambda$
+		Função & $$\lambda$lambda$<parametro>.<retorno> & $$\lambda$lambda$x.x$\lambda$$\lambda$
+		Aplicação & <função><varável ou função> &  ($$\lambda$lambda$x.x) a$\lambda$$\lambda$
+	$\lambda$end{tabular}
 
-  \begin{itemize}
-    \item
-\end{itemize}
-\end{frame}
-\end{document}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Booleans}
+	$\lambda$begin{itemize}
+		$\lambda$item True := $\lambda$$\lambda$a.$\lambda$$\lambda$b.a
+		$\lambda$item False := $\lambda$$\lambda$a.$\lambda$$\lambda$b.b
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Lógica}
+	$\lambda$begin{itemize}
+		$\lambda$item Not := $\lambda$$\lambda$b.b False True
+		$\lambda$item And := $\lambda$$\lambda$a.$\lambda$$\lambda$b.a b F
+		$\lambda$item Or := $\lambda$$\lambda$a.$\lambda$$\lambda$b a T b
+	$\lambda$end{itemize}
+
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Numeros}
+	$\lambda$begin{itemize}
+		$\lambda$item 1 := $\lambda$$\lambda$f.$\lambda$$\lambda$a f a
+		$\lambda$item 2 := $\lambda$$\lambda$f.$\lambda$$\lambda$a f f a
+		$\lambda$item 3 := $\lambda$$\lambda$f.$\lambda$$\lambda$a f f f a
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Aritimética}
+	$\lambda$begin{itemize}
+		$\lambda$item Suc := $\lambda$$\lambda$n.$\lambda$$\lambda$f.$\lambda$$\lambda$a. f ( n f a)
+		$\lambda$item Add := $\lambda$$\lambda$a.$\lambda$$\lambda$b. (a Suc) b
+		$\lambda$item Mult := $\lambda$$\lambda$a.$\lambda$$\lambda$b.$\lambda$$\lambda$f a (b f)
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$begin{frame}
+	$\lambda$frametitle{Recurção}
+	$\lambda$begin{itemize}
+		$\lambda$item Y := $\lambda$$\lambda$f. ($\lambda$$\lambda$x. f (x x))  ($\lambda$$\lambda$x. f(x x))
+	$\lambda$end{itemize}
+$\lambda$end{frame}
+$\lambda$end{document}
